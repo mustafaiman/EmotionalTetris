@@ -1,4 +1,4 @@
-package org.psnbtech;
+package org.emotionaltetris;
 
 import java.awt.Color;
 

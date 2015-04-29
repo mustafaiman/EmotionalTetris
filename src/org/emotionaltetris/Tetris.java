@@ -1,4 +1,4 @@
-package org.psnbtech;
+package org.emotionaltetris;
 
 import java.awt.BorderLayout;
 import java.awt.event.KeyAdapter;
