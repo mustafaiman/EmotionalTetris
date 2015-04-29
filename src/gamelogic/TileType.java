@@ -1,4 +1,4 @@
-package org.emotionaltetris;
+package gamelogic;
 
 import java.awt.Color;
 
