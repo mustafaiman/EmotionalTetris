@@ -33,7 +33,12 @@ public class Tetris extends JFrame implements GameAdapterObserver {
 	 * The number of pieces that exist.
 	 */
 	private static final int TYPE_COUNT = TileType.values().length;
-		
+
+	/**
+	 * The EmotionalPanel instance
+	 */
+	private final EmotionalPanel emotional;
+
 	/**
 	 * The BoardPanel instance.
 	 */
@@ -128,6 +133,10 @@ public class Tetris extends JFrame implements GameAdapterObserver {
 	private volatile boolean connectionReady;
 
 	/**
+	 * invert direction
+	 */
+	private boolean invertDirection;
+	/**
 	 * Creates a new Tetris instance. Sets up the window's properties,
 	 * and adds a controller listener.
 	 */
@@ -145,13 +154,20 @@ public class Tetris extends JFrame implements GameAdapterObserver {
 		 */
 		this.board = new BoardPanel(this);
 		this.side = new SidePanel(this);
+		this.emotional = new EmotionalPanel(this);
 		
 		/*
 		 * Add the BoardPanel and SidePanel instances to the window.
 		 */
 		add(board, BorderLayout.CENTER);
 		add(side, BorderLayout.EAST);
-		
+		//add(emotional, BorderLayout.WEST);
+
+		/**
+		 * Default values
+		 */
+		revertToDefault();
+
 		/*
 		 * Adds a custom anonymous KeyListener to the frame.
 		 */
@@ -274,6 +290,13 @@ public class Tetris extends JFrame implements GameAdapterObserver {
 		setLocationRelativeTo(null);
 		setVisible(true);
 	}
+
+	/**
+	 * Revert to default
+	 */
+	private void revertToDefault(){
+		invertDirection = false;
+	}
 	
 	/**
 	 * Starts the game running. Initializes everything and enters the game loop.
@@ -294,23 +317,6 @@ public class Tetris extends JFrame implements GameAdapterObserver {
 		this.logicTimer = new Clock(gameSpeed);
 		logicTimer.setPaused(true);
 
-		/*
-		 * Initialize GameAdapter
-		 */
-		gameAdapter = new GameAdapterGeneric("127.0.0.1",9998);
-		gameAdapter.registerObserver(this);
-		gameAdapter.connectToServer();
-
-		/*
-		 * Wait until connection established
-		 */
-		while( !connectionReady ) {
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
 
 		while(true) {
 			//Get the time that the frame started.
@@ -627,5 +633,11 @@ public class Tetris extends JFrame implements GameAdapterObserver {
 	@Override
 	public void connectionFailed(GameAdapterGeneric adapter) {
 		connectionReady = false;
+	}
+
+	public void connect(String host, int port) {
+		gameAdapter = new GameAdapterGeneric(host, port);
+		gameAdapter.registerObserver(this);
+		gameAdapter.connectToServer();
 	}
 }
