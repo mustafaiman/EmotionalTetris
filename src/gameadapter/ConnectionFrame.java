@@ -22,12 +22,9 @@ public class ConnectionFrame extends JFrame{
         TextField hostPort = new TextField("9998");
         Button connectButton = new Button("Connect");
         connectButton.setFocusable(false);
-        connectButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                tetris.connect(hostIP.getText(), Integer.parseInt(hostPort.getText()));
-                setVisible(false);
-            }
+        connectButton.addActionListener(e -> {
+            tetris.connect(hostIP.getText(), Integer.parseInt(hostPort.getText()));
+            setVisible(false);
         });
 
         this.add(new Label("Host:"));

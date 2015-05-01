@@ -133,9 +133,12 @@ public class Tetris extends JFrame implements GameAdapterObserver {
 	private volatile boolean connectionReady;
 
 	/**
-	 * invert direction
+	 * Gameflow controlling variables
 	 */
 	private boolean invertDirection;
+	private boolean invertRotation;
+	private boolean boring;
+
 	/**
 	 * Creates a new Tetris instance. Sets up the window's properties,
 	 * and adds a controller listener.
@@ -195,8 +198,10 @@ public class Tetris extends JFrame implements GameAdapterObserver {
 				 * position is valid. If so, we decrement the current column by 1.
 				 */
 				case KeyEvent.VK_A:
-					if(!isPaused && board.isValidAndEmpty(currentType, currentCol - 1, currentRow, currentRotation)) {
+					if(!invertDirection && !isPaused && board.isValidAndEmpty(currentType, currentCol - 1, currentRow, currentRotation)) {
 						currentCol--;
+					} else if(invertDirection && !isPaused && board.isValidAndEmpty(currentType, currentCol + 1, currentRow, currentRotation)) {
+						currentCol++;
 					}
 					break;
 					
@@ -206,7 +211,9 @@ public class Tetris extends JFrame implements GameAdapterObserver {
 				 * position is valid. If so, we increment the current column by 1.
 				 */
 				case KeyEvent.VK_D:
-					if(!isPaused && board.isValidAndEmpty(currentType, currentCol + 1, currentRow, currentRotation)) {
+					if(!invertDirection && !isPaused && board.isValidAndEmpty(currentType, currentCol + 1, currentRow, currentRotation)) {
+						currentCol++;
+					} else if(invertDirection && !isPaused && board.isValidAndEmpty(currentType, currentCol - 1, currentRow, currentRotation)) {
 						currentCol++;
 					}
 					break;
@@ -218,8 +225,10 @@ public class Tetris extends JFrame implements GameAdapterObserver {
 				 * rotation, the code for rotating the piece is handled in another method.
 				 */
 				case KeyEvent.VK_Q:
-					if(!isPaused) {
+					if(!isPaused && !invertRotation) {
 						rotatePiece((currentRotation == 0) ? 3 : currentRotation - 1);
+					} else if (!isPaused && invertRotation){
+						rotatePiece((currentRotation == 3) ? 0 : currentRotation + 1);
 					}
 					break;
 				
@@ -230,8 +239,10 @@ public class Tetris extends JFrame implements GameAdapterObserver {
 				 * rotation, the code for rotating the piece is handled in another method.
 				 */
 				case KeyEvent.VK_E:
-					if(!isPaused) {
+					if(!isPaused && !invertRotation) {
 						rotatePiece((currentRotation == 3) ? 0 : currentRotation + 1);
+					} else if(!isPaused && invertRotation) {
+						rotatePiece((currentRotation == 0) ? 3 : currentRotation - 1);
 					}
 					break;
 					
@@ -296,6 +307,8 @@ public class Tetris extends JFrame implements GameAdapterObserver {
 	 */
 	private void revertToDefault(){
 		invertDirection = false;
+		invertRotation = false;
+		boring = false;
 	}
 	
 	/**
@@ -448,7 +461,7 @@ public class Tetris extends JFrame implements GameAdapterObserver {
 		this.currentCol = currentType.getSpawnColumn();
 		this.currentRow = currentType.getSpawnRow();
 		this.currentRotation = 0;
-		this.nextType = TileType.values()[random.nextInt(TYPE_COUNT)];
+		this.nextType = TileType.values()[boring ? 3 : random.nextInt(TYPE_COUNT)];
 		
 		/*
 		 * If the spawn point is invalid, we need to pause the game and flag that we've lost
