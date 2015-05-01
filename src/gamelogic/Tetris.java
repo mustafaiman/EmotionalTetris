@@ -1,5 +1,9 @@
 package gamelogic;
 
+import gameadapter.GameAdapterGeneric;
+import gameadapter.GameAdapterObserver;
+import shared.Emotion;
+
 import java.awt.BorderLayout;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -13,7 +17,7 @@ import javax.swing.JFrame;
  * @author Brendan Jones
  *
  */
-public class Tetris extends JFrame {
+public class Tetris extends JFrame implements GameAdapterObserver {
 	
 	/**
 	 * The Serial Version UID.
@@ -112,7 +116,17 @@ public class Tetris extends JFrame {
 	 * The speed of the game.
 	 */
 	private float gameSpeed;
-		
+
+	/**
+	 * GameAdapter talks to Emotion Engine
+	 */
+	private GameAdapterGeneric gameAdapter;
+
+	/**
+	 * Indicates if we are connected to EmotionEngine
+	 */
+	private volatile boolean connectionReady;
+
 	/**
 	 * Creates a new Tetris instance. Sets up the window's properties,
 	 * and adds a controller listener.
@@ -265,6 +279,7 @@ public class Tetris extends JFrame {
 	 * Starts the game running. Initializes everything and enters the game loop.
 	 */
 	private void startGame() {
+
 		/*
 		 * Initialize our random number generator, logic timer, and new game variables.
 		 */
@@ -278,7 +293,25 @@ public class Tetris extends JFrame {
 		 */
 		this.logicTimer = new Clock(gameSpeed);
 		logicTimer.setPaused(true);
-		
+
+		/*
+		 * Initialize GameAdapter
+		 */
+		gameAdapter = new GameAdapterGeneric("127.0.0.1",9998);
+		gameAdapter.registerObserver(this);
+		gameAdapter.connectToServer();
+
+		/*
+		 * Wait until connection established
+		 */
+		while( !connectionReady ) {
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+
 		while(true) {
 			//Get the time that the frame started.
 			long start = System.nanoTime();
@@ -564,4 +597,35 @@ public class Tetris extends JFrame {
 		tetris.startGame();
 	}
 
+	/**
+	 * It does neccessary arrangements on the game depending on stored emotion in Game Adapter
+	 * It is called everytime a new data arrives from the engine
+	 */
+	private void changeGameLogic() {
+		if(gameAdapter.getStoredEmotion() == Emotion.PEACEFUL)
+			gameSpeed += 20;
+	}
+
+	@Override
+	public void dataArrived(GameAdapterGeneric adapter) {
+		Emotion em = adapter.getStoredEmotion();
+		System.out.println("\t\t>>debug stored emotion: " + em);
+		changeGameLogic();
+	}
+
+	@Override
+	public void connectionError(GameAdapterGeneric adapter) {
+		connectionReady = false;
+	}
+
+	@Override
+	public void connectionEstablished(GameAdapterGeneric adapter) {
+		connectionReady = true;
+
+	}
+
+	@Override
+	public void connectionFailed(GameAdapterGeneric adapter) {
+		connectionReady = false;
+	}
 }

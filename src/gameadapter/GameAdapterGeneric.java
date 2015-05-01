@@ -87,6 +87,7 @@ public class GameAdapterGeneric {
     private void interpretResponse(String response) {
         // EmotionEngine sends heartbeat packages just to check client is still there.
         // This method ignores all unidentified responses
+        System.out.println("\t\t>>debug got message: " + response);
         String splitResponse[] = response.split(" ");
         String header = splitResponse[0];
 
