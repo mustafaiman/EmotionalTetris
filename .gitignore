@@ -1,4 +1,6 @@
 .idea/
 Tetris.iml
 bin/
+out/
 EmotionalTetris.iml
+*.class
