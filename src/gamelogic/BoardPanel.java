@@ -60,7 +60,7 @@ public class BoardPanel extends JPanel {
 	/**
 	 * The number of pixels that a tile takes up.
 	 */
-	public static final int TILE_SIZE = 24;
+	public static final int TILE_SIZE = 42;
 	
 	/**
 	 * The width of the shading on the tiles.

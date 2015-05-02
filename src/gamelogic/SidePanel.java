@@ -41,12 +41,12 @@ public class SidePanel extends JPanel {
 	/**
 	 * The center x of the next piece preview box.
 	 */
-	private static final int SQUARE_CENTER_X = 160;
+	private static final int SQUARE_CENTER_X = 180;
 	
 	/**
 	 * The center y of the next piece preview box.
 	 */
-	private static final int SQUARE_CENTER_Y = 95;
+	private static final int SQUARE_CENTER_Y = 135;
 	
 	/**
 	 * The size of the next piece preview box.
@@ -56,22 +56,22 @@ public class SidePanel extends JPanel {
 	/**
 	 * The number of pixels used on a small insets (generally used for categories).
 	 */
-	private static final int SMALL_INSET = 20;
-	
+	private static final int SMALL_INSET = 30;
+
 	/**
 	 * The number of pixels used on a large insets.
 	 */
-	private static final int LARGE_INSET = 40;
+	private static final int LARGE_INSET = 60;
 	
 	/**
 	 * The y coordinate of the stats category.
 	 */
-	private static final int STATS_INSET = 220;
+	private static final int STATS_INSET = 400;
 	
 	/**
 	 * The y coordinate of the controls category.
 	 */
-	private static final int CONTROLS_INSET = 300;
+	private static final int CONTROLS_INSET = 550;
 	
 	/**
 	 * The number of pixels to offset between each string.
@@ -81,12 +81,12 @@ public class SidePanel extends JPanel {
 	/**
 	 * The small font.
 	 */
-	private static final Font SMALL_FONT = new Font("Tahoma", Font.BOLD, 11);
+	private static final Font SMALL_FONT = new Font("Tahoma", Font.BOLD, 13);
 	
 	/**
 	 * The large font.
 	 */
-	private static final Font LARGE_FONT = new Font("Tahoma", Font.BOLD, 13);
+	private static final Font LARGE_FONT = new Font("Tahoma", Font.BOLD, 15);
 	
 	/**
 	 * The color to draw the text and preview box in.
@@ -96,7 +96,7 @@ public class SidePanel extends JPanel {
 	/**
 	 * Location of the emotion information.
 	 */
-	private static final int EMOTION_Y = 170;
+	private static final int EMOTION_Y = 300;
 
 	/**
 	 * The Tetris instance.
@@ -110,11 +110,13 @@ public class SidePanel extends JPanel {
 	public SidePanel(Tetris tetris) {
 		this.tetris = tetris;
 
-		setPreferredSize(new Dimension(200, BoardPanel.PANEL_HEIGHT));
+		setPreferredSize(new Dimension(250, BoardPanel.PANEL_HEIGHT));
 		setBackground(Color.BLACK);
 
 		Button connect = new Button("Connect to Engine");
 		connect.setFocusable(false);
+		connect.setBackground(Color.black);
+		connect.setForeground(DRAW_COLOR);
 		connect.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -164,22 +166,22 @@ public class SidePanel extends JPanel {
 		 * Draw the next piece preview box.
 		 */
 		g.setFont(LARGE_FONT);
-		g.drawString("Next Piece:", SMALL_INSET, 100);
+		g.drawString("Next Piece:", SMALL_INSET, 145);
 		g.drawRect(SQUARE_CENTER_X - SQUARE_SIZE, SQUARE_CENTER_Y - SQUARE_SIZE, SQUARE_SIZE * 2, SQUARE_SIZE * 2);
 
 		g.drawString("Emotion:", SMALL_INSET, EMOTION_Y);
 		switch (tetris.getEmotion().getValue()){
 			case 0:
 				g.setColor(Color.CYAN);
-				g.drawString("JOY"			, SMALL_INSET + 66, EMOTION_Y);
+				g.drawString("JOY"			, SMALL_INSET + 70, EMOTION_Y);
 				break;
 			case 1:
 				g.setColor(new Color(165,42,42));
-				g.drawString("DISGUST"		, SMALL_INSET + 66, EMOTION_Y);
+				g.drawString("DISGUST"		, SMALL_INSET + 70, EMOTION_Y);
 				break;
 			case 2:
 				g.setColor(Color.GREEN);
-				g.drawString("PEACEFUL"		, SMALL_INSET + 66, EMOTION_Y);
+				g.drawString("PEACEFUL"		, SMALL_INSET + 70, EMOTION_Y);
 				break;
 			case 3:
 				g.setColor(Color.RED);
@@ -187,7 +189,7 @@ public class SidePanel extends JPanel {
 				break;
 			default:
 				g.setColor(DRAW_COLOR);
-				g.drawString("NO EMO"		, SMALL_INSET + 66, EMOTION_Y);
+				g.drawString("NO EMO"		, SMALL_INSET + 70, EMOTION_Y);
 		}
 		g.setColor(DRAW_COLOR);
 

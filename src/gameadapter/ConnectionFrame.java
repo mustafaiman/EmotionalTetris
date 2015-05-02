@@ -13,10 +13,10 @@ import java.awt.event.ActionListener;
  */
 public class ConnectionFrame extends JFrame{
     public ConnectionFrame(Tetris tetris){
-        setLocation(300,300);
+        setLocation(Toolkit.getDefaultToolkit().getScreenSize().width/3,Toolkit.getDefaultToolkit().getScreenSize().height/3);
         setLayout(new GridLayout(3, 2));
         applyComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-        setPreferredSize(new Dimension(200, 200 ));
+        setPreferredSize(new Dimension(200, 100 ));
         setBackground(Color.BLACK);
         TextField hostIP = new TextField("127.0.0.1");
         TextField hostPort = new TextField("9998");
