@@ -1,6 +1,7 @@
 package gamelogic;
 
 import gameadapter.ConnectionFrame;
+import shared.Emotion;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -40,12 +41,12 @@ public class SidePanel extends JPanel {
 	/**
 	 * The center x of the next piece preview box.
 	 */
-	private static final int SQUARE_CENTER_X = 130;
+	private static final int SQUARE_CENTER_X = 160;
 	
 	/**
 	 * The center y of the next piece preview box.
 	 */
-	private static final int SQUARE_CENTER_Y = 65;
+	private static final int SQUARE_CENTER_Y = 95;
 	
 	/**
 	 * The size of the next piece preview box.
@@ -65,7 +66,7 @@ public class SidePanel extends JPanel {
 	/**
 	 * The y coordinate of the stats category.
 	 */
-	private static final int STATS_INSET = 175;
+	private static final int STATS_INSET = 220;
 	
 	/**
 	 * The y coordinate of the controls category.
@@ -91,7 +92,12 @@ public class SidePanel extends JPanel {
 	 * The color to draw the text and preview box in.
 	 */
 	private static final Color DRAW_COLOR = new Color(128, 192, 128);
-	
+
+	/**
+	 * Location of the emotion information.
+	 */
+	private static final int EMOTION_Y = 170;
+
 	/**
 	 * The Tetris instance.
 	 */
@@ -103,7 +109,7 @@ public class SidePanel extends JPanel {
 	 */
 	public SidePanel(Tetris tetris) {
 		this.tetris = tetris;
-		
+
 		setPreferredSize(new Dimension(200, BoardPanel.PANEL_HEIGHT));
 		setBackground(Color.BLACK);
 
@@ -158,8 +164,33 @@ public class SidePanel extends JPanel {
 		 * Draw the next piece preview box.
 		 */
 		g.setFont(LARGE_FONT);
-		g.drawString("Next Piece:", SMALL_INSET, 70);
+		g.drawString("Next Piece:", SMALL_INSET, 100);
 		g.drawRect(SQUARE_CENTER_X - SQUARE_SIZE, SQUARE_CENTER_Y - SQUARE_SIZE, SQUARE_SIZE * 2, SQUARE_SIZE * 2);
+
+		g.drawString("Emotion:", SMALL_INSET, EMOTION_Y);
+		switch (tetris.getEmotion().getValue()){
+			case 0:
+				g.setColor(Color.CYAN);
+				g.drawString("JOY"			, SMALL_INSET + 66, EMOTION_Y);
+				break;
+			case 1:
+				g.setColor(new Color(165,42,42));
+				g.drawString("DISGUST"		, SMALL_INSET + 66, EMOTION_Y);
+				break;
+			case 2:
+				g.setColor(Color.GREEN);
+				g.drawString("PEACEFUL"		, SMALL_INSET + 66, EMOTION_Y);
+				break;
+			case 3:
+				g.setColor(Color.RED);
+				g.drawString("FRUSTRATED"	, SMALL_INSET + 66, EMOTION_Y);
+				break;
+			default:
+				g.setColor(DRAW_COLOR);
+				g.drawString("NO EMO"		, SMALL_INSET + 66, EMOTION_Y);
+		}
+		g.setColor(DRAW_COLOR);
+
 		
 		/*
 		 * Draw a preview of the next piece that will be spawned. The code is pretty much

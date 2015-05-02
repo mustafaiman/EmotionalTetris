@@ -177,8 +177,7 @@ public class GameAdapterGeneric {
      * @return Returns the most recently received emotion from Emotion Engine
      */
     public Emotion getStoredEmotion() {
-
-        return activeEmotion;
+            return activeEmotion;
     }
 
     public void registerObserver(GameAdapterObserver observer) {
