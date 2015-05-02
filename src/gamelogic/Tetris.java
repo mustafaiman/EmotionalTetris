@@ -35,11 +35,6 @@ public class Tetris extends JFrame implements GameAdapterObserver {
     private static final int TYPE_COUNT = TileType.values().length;
 
     /**
-     * The EmotionalPanel instance
-     */
-    private final EmotionalPanel emotional;
-
-    /**
      * The BoardPanel instance.
      */
     private BoardPanel board;
@@ -157,14 +152,12 @@ public class Tetris extends JFrame implements GameAdapterObserver {
 		 */
         this.board = new BoardPanel(this);
         this.side = new SidePanel(this);
-        this.emotional = new EmotionalPanel(this);
-		
+
 		/*
 		 * Add the BoardPanel and SidePanel instances to the window.
 		 */
         add(board, BorderLayout.CENTER);
         add(side, BorderLayout.EAST);
-        //add(emotional, BorderLayout.WEST);
 
         /**
          * Default values
