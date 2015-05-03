@@ -3,7 +3,6 @@ s = socket.socket()
 host = socket.gethostname()
 port = 9999
 s.bind(('127.0.0.1',9998))
-
 s.listen(0)
 c, addr = s.accept()
 print 'got connection', addr

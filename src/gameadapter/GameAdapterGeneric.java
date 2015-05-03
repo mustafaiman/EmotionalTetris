@@ -60,6 +60,8 @@ public class GameAdapterGeneric {
                         String line = null;
                         try {
                             line = bufferedReader.readLine();
+                            if(line == null)
+                                throw new IOException();
                             interpretResponse(line);
                         } catch (IOException e) {
                             notifyObserversConnectionError();
@@ -97,12 +99,6 @@ public class GameAdapterGeneric {
                 if( splitResponse[1].equals(emotion.name())) {
                     activeEmotion = emotion;
                     notifyObserversDataArrived();
-
-                    if (emotion.equals(Emotion.FRUSTRATED))
-                        SoundManager.playFrustrated();
-                    else
-                        SoundManager.playNormal();
-                    break;
                 }
             }
         }
