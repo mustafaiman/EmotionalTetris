@@ -1,6 +1,7 @@
 package gameadapter;
 
 import shared.Emotion;
+import soundservice.SoundManager;
 
 import java.io.*;
 import java.net.Socket;
@@ -96,6 +97,11 @@ public class GameAdapterGeneric {
                 if( splitResponse[1].equals(emotion.name())) {
                     activeEmotion = emotion;
                     notifyObserversDataArrived();
+
+                    if (emotion.equals(Emotion.FRUSTRATED))
+                        SoundManager.playFrustrated();
+                    else
+                        SoundManager.playNormal();
                     break;
                 }
             }

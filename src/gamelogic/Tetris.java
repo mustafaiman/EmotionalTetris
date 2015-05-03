@@ -2,14 +2,17 @@ package gamelogic;
 
 import gameadapter.GameAdapterGeneric;
 import gameadapter.GameAdapterObserver;
+import javafx.embed.swing.JFXPanel;
 import shared.Emotion;
+import soundservice.SoundManager;
 
 import java.awt.BorderLayout;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.Random;
+import java.util.concurrent.CountDownLatch;
 
-import javax.swing.JFrame;
+import javax.swing.*;
 
 /**
  * The {@code Tetris} class is responsible for handling much of the game logic and
@@ -185,14 +188,19 @@ public class Tetris extends JFrame implements GameAdapterObserver {
                     case KeyEvent.VK_1:
                         revertToDefault();
                         invertRotation = true;
-                        invertDirection= true;
+                        invertDirection = true;
                         break;
 
                     // boring
                     case KeyEvent.VK_2:
                         revertToDefault();
-                        boring=true;
+                        boring = true;
                         break;
+                /*
+                 * toggle music
+                 */
+                    case KeyEvent.VK_M:
+                        SoundManager.toggle();
 				
 				/*
 				 * Drop - When pressed, we check to see that the game is not
@@ -313,6 +321,11 @@ public class Tetris extends JFrame implements GameAdapterObserver {
         pack();
         setLocationRelativeTo(null);
         setVisible(true);
+        try {
+            SoundManager.playNormal();
+        } catch (Exception e){
+            System.out.println(e);
+        }
     }
 
     /**
@@ -328,7 +341,6 @@ public class Tetris extends JFrame implements GameAdapterObserver {
      * Starts the game running. Initializes everything and enters the game loop.
      */
     private void startGame() {
-
 		/*
 		 * Initialize our random number generator, logic timer, and new game variables.
 		 */
@@ -644,8 +656,21 @@ public class Tetris extends JFrame implements GameAdapterObserver {
      * @param args Unused.
      */
     public static void main(String[] args) {
+        final CountDownLatch latch = new CountDownLatch(1);
+        SwingUtilities.invokeLater(() -> {
+            new JFXPanel(); // initializes JavaFX environment
+            latch.countDown();
+        });
+        try {
+            latch.await();
+        } catch (InterruptedException e) {
+            System.out.println(e);
+        }
+
         Tetris tetris = new Tetris();
         tetris.startGame();
+
+        SoundManager.playNormal();
     }
 
     /**
