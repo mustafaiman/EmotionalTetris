@@ -149,6 +149,9 @@ public class Tetris extends JFrame implements GameAdapterObserver {
         setLayout(new BorderLayout());
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
+
+        //
+        this.isNewGame = true;
 		
 		/*
 		 * Initialize the BoardPanel and SidePanel instances.
@@ -166,7 +169,6 @@ public class Tetris extends JFrame implements GameAdapterObserver {
          * Default values
          */
         revertToDefault();
-
 		/*
 		 * Adds a custom anonymous KeyListener to the frame.
 		 */
@@ -286,6 +288,10 @@ public class Tetris extends JFrame implements GameAdapterObserver {
 				 * game state. If so, reset the game.
 				 */
                     case KeyEvent.VK_ENTER:
+                        if (!connectionReady) {
+                            System.out.println("there is no emotion engine attached");//TODO alert on screen
+                            break;
+                        }
                         if (isGameOver || isNewGame) {
                             resetGame();
                         }
@@ -500,9 +506,17 @@ public class Tetris extends JFrame implements GameAdapterObserver {
 		 * because it means that the pieces on the board have gotten too high.
 		 */
         if (!board.isValidAndEmpty(currentType, currentCol, currentRow, currentRotation)) {
-            this.isGameOver = true;
-            logicTimer.setPaused(true);
+            if (this.isGameOver == false) {
+                this.isGameOver = true;
+                onGameOver();
+                logicTimer.setPaused(true);
+            }
         }
+    }
+
+    private void onGameOver() {
+        //player lost the game, we assume FRUSTRATED last 30 milliseconds
+        gameAdapter.trainLastNMilliseconds(Emotion.FRUSTRATED,30000);
     }
 
     /**
@@ -673,21 +687,16 @@ public class Tetris extends JFrame implements GameAdapterObserver {
         SoundManager.playNormal();
     }
 
-    /**
-     * It does neccessary arrangements on the game depending on stored emotion in Game Adapter
-     * It is called everytime a new data arrives from the engine
-     */
-    private void changeGameLogic() {
-        if (gameAdapter.getStoredEmotion() == Emotion.PEACEFUL)
-            gameSpeed += 20;
-    }
 
     @Override
     public void dataArrived(GameAdapterGeneric adapter) {
         Emotion em = adapter.getStoredEmotion();
+        if (em.equals(Emotion.FRUSTRATED))
+            SoundManager.playFrustrated();
+        else
+            SoundManager.playNormal();
         System.out.println("\t\t>>debug stored emotion: " + em);
         side.repaint();
-        changeGameLogic();
     }
 
     @Override
