@@ -130,6 +130,8 @@ public class Tetris extends JFrame implements GameAdapterObserver {
      */
     private volatile boolean connectionReady;
 
+    private boolean isClassifying;
+
     /**
      * Gameflow controlling variables
      */
@@ -192,15 +194,27 @@ public class Tetris extends JFrame implements GameAdapterObserver {
                         revertToDefault();
                         invertRotation = true;
                         invertDirection = true;
-                        gameAdapter.openTrainingSession(Emotion.DISGUST);
                         break;
 
                     // boring
                     case KeyEvent.VK_2:
                         revertToDefault();
                         boring = true;
-                        gameAdapter.openTrainingSession(Emotion.BORED);
                         break;
+
+                    case KeyEvent.VK_SPACE:
+                        if(isClassifying) {
+                            gameAdapter.closeClassificationSession();
+                            gameAdapter.resetEmotion();
+                            isClassifying = false;
+                            side.repaint();
+                        } else {
+                            isClassifying = true;
+                            gameAdapter.openClassificationSession();
+                            side.repaint();
+                        }
+                        break;
+
 
                 /*
                  * toggle music
@@ -519,8 +533,7 @@ public class Tetris extends JFrame implements GameAdapterObserver {
     }
 
     private void onGameOver() {
-        //player lost the game, we assume FRUSTRATED last 30 milliseconds
-        gameAdapter.trainLastNMilliseconds(Emotion.DISGUST,10000);
+
     }
 
     /**
@@ -711,6 +724,9 @@ public class Tetris extends JFrame implements GameAdapterObserver {
     @Override
     public void connectionEstablished(GameAdapterGeneric adapter) {
         connectionReady = true;
+        isClassifying = true;
+        gameAdapter.openClassificationSession();
+
 
     }
 

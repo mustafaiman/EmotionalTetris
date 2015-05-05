@@ -19,7 +19,7 @@ public class ConnectionFrame extends JFrame{
         setPreferredSize(new Dimension(200, 100 ));
         setBackground(Color.BLACK);
         TextField hostIP = new TextField("127.0.0.1");
-        TextField hostPort = new TextField("9998");
+        TextField hostPort = new TextField("9997");
         Button connectButton = new Button("Connect");
         connectButton.setFocusable(false);
         connectButton.addActionListener(e -> {

@@ -77,6 +77,10 @@ public class GameAdapterGeneric {
         listeningThread.start();
     }
 
+    public void resetEmotion() {
+        activeEmotion = null;
+    }
+
     public void disconnect() {
         executorService.shutdown();
         listeningThread.stop();
@@ -129,6 +133,28 @@ public class GameAdapterGeneric {
             public Void call() throws Exception {
                 System.out.println("\t\t>>debug sent message: stop");
                 outputStream.println("stop");
+                return null;
+            }
+        });
+    }
+
+    public void openClassificationSession() {
+        executorService.submit(new Callable<Void>() {
+            @Override
+            public Void call() throws Exception {
+                System.out.println("\t\t>>debug sent message: stop");
+                outputStream.println("startclassification");
+                return null;
+            }
+        });
+    }
+
+    public void closeClassificationSession() {
+        executorService.submit(new Callable<Void>() {
+            @Override
+            public Void call() throws Exception {
+                System.out.println("\t\t>>debug sent message: stop");
+                outputStream.println("stopclassification");
                 return null;
             }
         });

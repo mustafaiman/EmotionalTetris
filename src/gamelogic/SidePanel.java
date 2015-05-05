@@ -185,11 +185,11 @@ public class SidePanel extends JPanel {
 				break;
 			case 3:
 				g.setColor(Color.RED);
-				g.drawString("FRUSTRATED"	, SMALL_INSET + 66, EMOTION_Y);
+				g.drawString("BORED"	, SMALL_INSET + 66, EMOTION_Y);
 				break;
 			default:
 				g.setColor(DRAW_COLOR);
-				g.drawString("NO EMO"		, SMALL_INSET + 70, EMOTION_Y);
+				g.drawString("NO EMOTION"		, SMALL_INSET + 70, EMOTION_Y);
 		}
 		g.setColor(DRAW_COLOR);
 
