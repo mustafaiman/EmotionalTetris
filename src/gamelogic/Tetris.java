@@ -184,6 +184,7 @@ public class Tetris extends JFrame implements GameAdapterObserver {
                     // default
                     case KeyEvent.VK_0:
                         revertToDefault();
+                        gameAdapter.closeTrainingSession();
                         break;
 
                     // frustrating
@@ -191,13 +192,16 @@ public class Tetris extends JFrame implements GameAdapterObserver {
                         revertToDefault();
                         invertRotation = true;
                         invertDirection = true;
+                        gameAdapter.openTrainingSession(Emotion.DISGUST);
                         break;
 
                     // boring
                     case KeyEvent.VK_2:
                         revertToDefault();
                         boring = true;
+                        gameAdapter.openTrainingSession(Emotion.BORED);
                         break;
+
                 /*
                  * toggle music
                  */
@@ -516,7 +520,7 @@ public class Tetris extends JFrame implements GameAdapterObserver {
 
     private void onGameOver() {
         //player lost the game, we assume FRUSTRATED last 30 milliseconds
-        gameAdapter.trainLastNMilliseconds(Emotion.FRUSTRATED,30000);
+        gameAdapter.trainLastNMilliseconds(Emotion.DISGUST,10000);
     }
 
     /**
@@ -691,7 +695,7 @@ public class Tetris extends JFrame implements GameAdapterObserver {
     @Override
     public void dataArrived(GameAdapterGeneric adapter) {
         Emotion em = adapter.getStoredEmotion();
-        if (em.equals(Emotion.FRUSTRATED))
+        if (em.equals(Emotion.DISGUST))
             SoundManager.playFrustrated();
         else
             SoundManager.playNormal();

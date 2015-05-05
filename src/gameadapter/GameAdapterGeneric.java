@@ -127,6 +127,7 @@ public class GameAdapterGeneric {
         executorService.submit(new Callable<Void>() {
             @Override
             public Void call() throws Exception {
+                System.out.println("\t\t>>debug sent message: stop");
                 outputStream.println("stop");
                 return null;
             }
@@ -140,6 +141,7 @@ public class GameAdapterGeneric {
         executorService.submit(new Callable<Void>() {
             @Override
             public Void call() throws Exception {
+                System.out.println("\t\t>>debug sent message: cancel");
                 outputStream.println("cancel");
                 return null;
             }
@@ -156,6 +158,7 @@ public class GameAdapterGeneric {
             @Override
             public Void call() throws Exception {
                 outputStream.println("ntrain " + emotion.name() + " " + n);
+                System.out.println("\t\t>>debug sent message: ntrain " + emotion.name());
                 return null;
             }
         });
@@ -169,6 +172,7 @@ public class GameAdapterGeneric {
             @Override
             public Void call() throws Exception {
                 outputStream.println("getemotion");
+                System.out.println("\t\t>>debug sent message: getemotion");
                 return null;
             }
         });
