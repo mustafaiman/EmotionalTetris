@@ -346,7 +346,7 @@ public class Tetris extends JFrame implements GameAdapterObserver {
         setLocationRelativeTo(null);
         setVisible(true);
         try {
-            SoundManager.playNormal();
+            SoundManager.playNeutral();
         } catch (Exception e){
             System.out.println(e);
         }
@@ -701,7 +701,7 @@ public class Tetris extends JFrame implements GameAdapterObserver {
         Tetris tetris = new Tetris();
         tetris.startGame();
 
-        SoundManager.playNormal();
+        SoundManager.playNeutral();
     }
 
 
@@ -710,8 +710,14 @@ public class Tetris extends JFrame implements GameAdapterObserver {
         Emotion em = adapter.getStoredEmotion();
         if (em.equals(Emotion.DISGUST))
             SoundManager.playFrustrated();
+        else if (em.equals(Emotion.NEUTRAL))
+            SoundManager.playNeutral();
+        else if (em.equals(Emotion.JOY))
+            SoundManager.playJoy();
+        else if (em.equals(Emotion.BORED))
+            SoundManager.playBored();
         else
-            SoundManager.playNormal();
+            SoundManager.playPeaceful();
         System.out.println("\t\t>>debug stored emotion: " + em);
         side.repaint();
     }

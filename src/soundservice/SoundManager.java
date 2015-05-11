@@ -4,7 +4,6 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 
@@ -13,18 +12,20 @@ import java.util.ArrayList;
  */
 public class SoundManager{
     private static MediaPlayer mp;
-    private static String currentPlayMode = "normal";
-    private static String normalPath = "sound files/normal";
-    private static String frustratedPath = "sound files/frustrated";
-    private static String victorySong = "sound files/Victory.mp3";
+    private static String currentPlayMode = "neutral";
+    private static String neutralPath       = "sound files/neutral";
+    private static String frustratedPath    = "sound files/frustrated";
+    private static String boredPath         = "sound files/bored";
+    private static String peacefulPath      = "sound files/peaceful";
+    private static String joyPath           = "sound files/joy";
     private static boolean playing = false;
     private static boolean turned_on = true;
 
-    public static void playNormal(){
-        if(currentPlayMode.equals("normal") && (mp != null) && playing) return;
+    public static void playNeutral(){
+        if(currentPlayMode.equals("neutral") && (mp != null) && playing) return;
         if (!turned_on) return;
-        currentPlayMode = "normal";
-        File[] normal = getTracks(normalPath);
+        currentPlayMode = "neutral";
+        File[] normal = getTracks(neutralPath);
         URI song = normal[(int) (Math.random()*normal.length)].toURI();
         Media hit = new Media(song.toString());
         if(mp == null)
@@ -36,7 +37,7 @@ public class SoundManager{
         mp.setOnPlaying(() -> playing = true);
         mp.setOnStopped(() -> playing = false);
         mp.setOnError(() -> playing = false);
-        mp.setOnEndOfMedia(() -> SoundManager.playNormal());
+        mp.setOnEndOfMedia(() -> SoundManager.playNeutral());
         mp.play();
     }
 
@@ -60,21 +61,63 @@ public class SoundManager{
         mp.play();
     }
 
-    public static void playVictory() {
-        if (currentPlayMode.equals("victory") && (mp != null) && playing) return;
+    public static void playJoy() {
+        if(currentPlayMode.equals("joy") && (mp != null) && playing)return;
         if (!turned_on) return;
-        currentPlayMode = "victory";
-        Media hit = new Media(new File(victorySong).getAbsolutePath());
-        if (mp == null)
+        currentPlayMode = "joy";
+        File[] joy = getTracks(joyPath);
+        URI song = joy[(int) (Math.random()*joy.length)].toURI();
+        Media hit = new Media(song.toString());
+        if(mp == null)
             mp = new MediaPlayer(hit);
-        else {
+        else{
             mp.stop();
             mp = new MediaPlayer(hit);
         }
         mp.setOnPlaying(() -> playing = true);
         mp.setOnStopped(() -> playing = false);
         mp.setOnError(() -> playing = false);
-        mp.setOnEndOfMedia(() -> SoundManager.playVictory());
+        mp.setOnEndOfMedia(() -> SoundManager.playJoy());
+        mp.play();
+    }
+
+    public static void playBored() {
+        if(currentPlayMode.equals("bored") && (mp != null) && playing)return;
+        if (!turned_on) return;
+        currentPlayMode = "bored";
+        File[] bored = getTracks(boredPath);
+        URI song = bored[(int) (Math.random()*bored.length)].toURI();
+        Media hit = new Media(song.toString());
+        if(mp == null)
+            mp = new MediaPlayer(hit);
+        else{
+            mp.stop();
+            mp = new MediaPlayer(hit);
+        }
+        mp.setOnPlaying(() -> playing = true);
+        mp.setOnStopped(() -> playing = false);
+        mp.setOnError(() -> playing = false);
+        mp.setOnEndOfMedia(() -> SoundManager.playBored());
+        mp.play();
+    }
+
+    public static void playPeaceful() {
+        if(currentPlayMode.equals("peaceful") && (mp != null) && playing)return;
+        if (!turned_on) return;
+        currentPlayMode = "peaceful";
+        File[] peaceful = getTracks(peacefulPath);
+        URI song = peaceful[(int) (Math.random()*peaceful.length)].toURI();
+        Media hit = new Media(song.toString());
+        if(mp == null)
+            mp = new MediaPlayer(hit);
+        else{
+            mp.stop();
+            mp = new MediaPlayer(hit);
+        }
+        mp.setOnPlaying(() -> playing = true);
+        mp.setOnStopped(() -> playing = false);
+        mp.setOnError(() -> playing = false);
+        mp.setOnEndOfMedia(() -> SoundManager.playPeaceful());
         mp.play();
     }
 
@@ -88,7 +131,7 @@ public class SoundManager{
     public static void toggle(){
         if (!turned_on) {
             turned_on = true;
-            playNormal();
+            playNeutral();
         } else {
             turned_on = false;
             stop();
