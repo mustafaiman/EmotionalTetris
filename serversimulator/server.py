@@ -15,8 +15,8 @@ while True:
         c.send('emotion DISGUST\n')
     elif msg.startswith('p'):
         c.send('emotion PEACEFUL\n')
-    elif msg.startswith('f'):
-        c.send('emotion FRUSTRATED\n')
+    elif msg.startswith('b'):
+        c.send('emotion BORED\n')
     elif msg.startswith('j'):
         c.send('emotion JOY\n')
 c.close()
